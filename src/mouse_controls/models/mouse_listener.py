@@ -26,11 +26,16 @@ class MouseListener:
         def on_press(key: Key) -> None:
             self.mouse.on_press(key, listener)
 
-        with Listener(on_press=on_press) as listener:
-            logger.info(
-                "Mouse listener started. Press %s to toggle lock, %s to exit.",
-                self.mouse._lock_toggle_btn,
-                self.mouse._exit_btn,
-            )
-            self.mouse.start()
-            listener.join()
+        try:
+            with Listener(on_press=on_press) as listener:
+                logger.info(
+                    "Mouse listener started. Press %s to toggle lock, %s to exit.",
+                    self.mouse._lock_toggle_btn.name,
+                    self.mouse._exit_btn.name,
+                )
+                self.mouse.start()
+                listener.join()
+        except (KeyboardInterrupt, SystemExit):
+            logger.info("Mouse listener stopped by user.")
+            self.mouse.exit()
+            listener.stop()

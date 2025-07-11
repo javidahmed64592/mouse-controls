@@ -56,9 +56,10 @@ class Mouse(threading.Thread):
 
     def exit(self) -> None:
         """Unlock the mouse and stop the thread."""
-        logger.info("Attempting to shut down...")
-        self._mouse_locked = False
-        self._running = False
+        if self._running:
+            logger.info("Mouse control thread stopping...")
+            self._mouse_locked = False
+            self._running = False
 
     def on_press(self, key: Key, listener: Listener) -> None:
         """Handle key press events to toggle mouse lock or exit the program.
@@ -76,7 +77,7 @@ class Mouse(threading.Thread):
 
     def run(self) -> None:
         """Run the mouse control thread."""
-        logger.info("Mouse control thread started.")
+        logger.info("Mouse control thread starting...")
         while self._running:
             if self._mouse_locked:
                 x = np.clip(
