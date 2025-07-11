@@ -33,6 +33,9 @@ dev = [
     "tomli",
 ]
 
+[project.scripts]
+mouse-control = "mouse_controls.main:main"
+
 [project.urls]
 repository = "https://github.com/javidahmed64592/template-python"
 
