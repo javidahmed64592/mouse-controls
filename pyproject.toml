@@ -5,9 +5,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "example"
+name = "mouse-controls"
 version = "0.1.0"
-description = "An example pyproject.toml."
+description = "A simple Python library for controlling the user's mouse."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
@@ -20,7 +20,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "numpy",
+    "numpy>=2.3.1",
+    "pynput>=1.8.1",
 ]
 
 [project.optional-dependencies]
@@ -143,5 +144,6 @@ pretty = true
 [[tool.mypy.overrides]]
 module = [
     "numpy.*",
+    "pynput.*",
 ]
 ignore_missing_imports = true
