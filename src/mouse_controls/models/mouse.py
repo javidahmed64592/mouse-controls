@@ -1,11 +1,14 @@
 """Mouse control module for locking the mouse position within specified limits."""
 
+import logging
 import threading
 import time
 
 import numpy as np
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Controller
+
+logger = logging.getLogger(__name__)
 
 
 class Mouse(threading.Thread):
@@ -46,10 +49,14 @@ class Mouse(threading.Thread):
     def toggle_mouse_lock(self) -> None:
         """Toggle the mouse lock state."""
         self._mouse_locked = not self._mouse_locked
+        logger.info(
+            "Mouse lock toggled. Current state: %s",
+            "Locked" if self._mouse_locked else "Unlocked",
+        )
 
     def exit(self) -> None:
         """Unlock the mouse and stop the thread."""
-        print("Attempting to shut down...")
+        logger.info("Attempting to shut down...")
         self._mouse_locked = False
         self._running = False
 
@@ -69,8 +76,9 @@ class Mouse(threading.Thread):
 
     def run(self) -> None:
         """Run the mouse control thread."""
+        logger.info("Mouse control thread started.")
         while self._running:
-            while self._mouse_locked:
+            if self._mouse_locked:
                 x = np.clip(
                     self._mouse.position[0],
                     self._pos_lims[0][0] + self._pos_buffer,
@@ -82,5 +90,4 @@ class Mouse(threading.Thread):
                     self._pos_lims[1][1] - self._pos_buffer,
                 )
                 self._mouse.position = (x, y)
-                time.sleep(self._delay)
             time.sleep(self._delay)
