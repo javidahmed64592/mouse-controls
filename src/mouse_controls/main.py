@@ -1,8 +1,9 @@
 """Main entry point for the mouse control application."""
 
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Key
 
 from mouse_controls.models.mouse import Mouse
+from mouse_controls.models.mouse_listener import MouseListener
 
 DELTA_TIME = 0.001
 LOCK_TOGGLE_BUTTON = Key.ctrl_r
@@ -19,9 +20,5 @@ def main() -> None:
         exit_btn=EXIT_BUTTON,
     )
 
-    def on_press(key: Key) -> None:
-        mouse.on_press(key, listener)
-
-    mouse.start()
-    with Listener(on_press=on_press) as listener:
-        listener.join()
+    listener = MouseListener(mouse)
+    listener.start()
