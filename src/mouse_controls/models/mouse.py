@@ -44,7 +44,7 @@ class Mouse(threading.Thread):
 
         self._mouse = Controller()
         self._mouse_locked = False
-        self._running = True
+        self._running = False
 
     def toggle_mouse_lock(self) -> None:
         """Toggle the mouse lock state."""
@@ -78,6 +78,8 @@ class Mouse(threading.Thread):
     def run(self) -> None:
         """Run the mouse control thread."""
         logger.info("Mouse control thread starting...")
+        self._running = True
+
         while self._running:
             if self._mouse_locked:
                 x = np.clip(
