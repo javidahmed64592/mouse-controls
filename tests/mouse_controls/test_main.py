@@ -1,7 +1,7 @@
 """Unit tests for the mouse_controls.main module."""
 
 from collections.abc import Generator
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -36,8 +36,7 @@ def mock_mouse_instance(mock_mouse: Mouse) -> Generator[Mouse, None, None]:
 @pytest.fixture
 def mock_mouse_listener_instance(mock_mouse_listener: MouseListener) -> Generator[MouseListener, None, None]:
     """Mock MouseListener instance for testing."""
-    with patch("mouse_controls.main.MouseListener") as mock_listener_class:
-        mock_mouse_listener.start = MagicMock()
+    with patch("mouse_controls.main.MouseListener") as mock_listener_class, patch.object(mock_mouse_listener, "start"):
         mock_listener_class.return_value = mock_mouse_listener
         yield mock_mouse_listener
 

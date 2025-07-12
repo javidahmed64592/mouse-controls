@@ -45,7 +45,7 @@ def mock_mouse_data() -> dict:
 
 
 @pytest.fixture
-def mock_mouse(mock_mouse_data: dict) -> Mouse:
+def mock_mouse(mock_mouse_data: dict) -> Generator[Mouse, None, None]:
     """Mock Mouse instance for testing."""
     with patch("mouse_controls.models.mouse.Controller") as mock_controller:
         mock_mouse = Mouse(
@@ -56,8 +56,8 @@ def mock_mouse(mock_mouse_data: dict) -> Mouse:
             exit_btn=mock_mouse_data["exit_btn"],
         )
         mock_mouse._mouse = mock_controller.return_value
-        mock_mouse.start = MagicMock()
-        return mock_mouse
+        with patch.object(mock_mouse, "start"):
+            yield mock_mouse
 
 
 @pytest.fixture
