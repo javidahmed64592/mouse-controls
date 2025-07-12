@@ -44,4 +44,4 @@ def mock_mouse_listener_instance(mock_mouse_listener: MouseListener) -> Generato
 def test_main(mock_config: Config, mock_mouse_instance: Mouse, mock_mouse_listener_instance: MouseListener) -> None:
     """Test the main function of the mouse control application."""
     main()
-    mock_mouse_listener_instance.start.assert_called_once()
+    mock_mouse_listener_instance.start.assert_called_once()  # type: ignore[attr-defined]

@@ -62,7 +62,7 @@ class TestMouse:
         mock_mouse.on_press(mock_mouse._lock_toggle_btn, mock_keyboard_listener)
 
         assert not mock_mouse._mouse_locked
-        assert "Mouse lock toggled. Current state: Unlocked" in caplog.text
+        assert "Mouse lock toggled. Current state: Unlocked" in caplog.text  # type: ignore[unreachable]
 
     def test_on_press_exit(
         self, caplog: pytest.LogCaptureFixture, mock_mouse: Mouse, mock_keyboard_listener: MagicMock

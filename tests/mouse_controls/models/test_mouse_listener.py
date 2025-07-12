@@ -29,7 +29,7 @@ class TestMouseListener:
             f"Press {mock_mouse._lock_toggle_btn.name} to toggle lock, {mock_mouse._exit_btn.name} to exit."
             in caplog.text
         )
-        mock_mouse.start.assert_called_once()
+        mock_mouse.start.assert_called_once()  # type: ignore[attr-defined]
         mock_keyboard_listener.__enter__.assert_called_once()
 
         # join() raises SystemExit so listener thread stops
