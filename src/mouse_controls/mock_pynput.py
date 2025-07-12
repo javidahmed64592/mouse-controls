@@ -107,10 +107,10 @@ def setup_pynput_mock() -> None:
     mock_pynput = MockPynput()
 
     # Replace modules in sys.modules
-    sys.modules["pynput"] = mock_pynput
-    sys.modules["pynput.keyboard"] = mock_pynput.keyboard
-    sys.modules["pynput.mouse"] = mock_pynput.mouse
+    sys.modules["pynput"] = mock_pynput  # type: ignore[assignment]
+    sys.modules["pynput.keyboard"] = mock_pynput.keyboard  # type: ignore[assignment]
+    sys.modules["pynput.mouse"] = mock_pynput.mouse  # type: ignore[assignment]
 
     # Set up Key constants
-    mock_pynput.keyboard.Key.ctrl_r = MockKey("ctrl_r")
-    mock_pynput.keyboard.Key.end = MockKey("end")
+    mock_pynput.keyboard.Key.ctrl_r = MockKey("ctrl_r")  # type: ignore[assignment]
+    mock_pynput.keyboard.Key.end = MockKey("end")  # type: ignore[assignment]

@@ -1,14 +1,12 @@
 """Fixtures for testing mouse_controls."""
 
 import logging
-import os
 from collections.abc import Generator
 from unittest.mock import MagicMock, patch
 
 import pytest
 from pynput.keyboard import Key, Listener
 
-from mouse_controls.mock_pynput import setup_pynput_mock
 from mouse_controls.models.mouse import Mouse
 from mouse_controls.models.mouse_listener import MouseListener
 
@@ -20,12 +18,6 @@ EXIT_BUTTON = Key.end
 
 
 # General fixtures
-def pytest_configure(config: pytest.Config) -> None:
-    """Configure pytest with pynput mocking for headless environments."""
-    if os.environ.get("CI") or os.environ.get("DISPLAY") is None:
-        setup_pynput_mock()
-
-
 @pytest.fixture(autouse=True)
 def configure_caplog(caplog: pytest.LogCaptureFixture) -> None:
     """Configure caplog for all tests."""
