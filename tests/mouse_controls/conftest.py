@@ -8,6 +8,7 @@ import pytest
 from pynput.keyboard import Key, Listener
 
 from mouse_controls.models.mouse import Mouse
+from mouse_controls.models.mouse_listener import MouseListener
 
 POS_LIMS = ((0, 1920), (0, 1080))
 POS_BUFFER = 10
@@ -55,11 +56,27 @@ def mock_mouse(mock_mouse_data: dict) -> Mouse:
             exit_btn=mock_mouse_data["exit_btn"],
         )
         mock_mouse._mouse = mock_controller.return_value
+        mock_mouse.start = MagicMock()
         return mock_mouse
 
 
 @pytest.fixture
-def mock_keyboard_listener() -> Generator[Listener, None, None]:
+def mock_keyboard_listener() -> Generator[MagicMock, None, None]:
     """Mock keyboard listener for testing."""
-    with patch("pynput.keyboard.Listener", return_value=MagicMock(spec=Listener)) as mock_listener:
-        yield mock_listener.return_value
+    with patch("mouse_controls.models.mouse_listener.Listener") as mock_listener_class:
+        mock_listener_instance = MagicMock(spec=Listener)
+        mock_listener_instance.join = MagicMock()
+        mock_listener_instance.stop = MagicMock()
+        mock_listener_instance.__enter__ = MagicMock(return_value=mock_listener_instance)
+        mock_listener_instance.__exit__ = MagicMock(return_value=None)
+
+        mock_listener_class.return_value = mock_listener_instance
+        yield mock_listener_instance
+
+
+@pytest.fixture
+def mock_mouse_listener(mock_mouse: Mouse, mock_keyboard_listener: MagicMock) -> MouseListener:
+    """Mock MouseListener instance for testing."""
+    with patch("mouse_controls.models.mouse_listener.Listener", return_value=mock_keyboard_listener):
+        mock_keyboard_listener.join.side_effect = KeyboardInterrupt
+        return MouseListener(mock_mouse)
